@@ -9,6 +9,10 @@ Reusable Codex skills and AI guidance for translating Figma designs into editabl
 
 The `examples/AGENTS.md` file shows how a project can enforce the central rule: editable content and visual values belong in Kadence block settings whenever Kadence can represent them.
 
+## Project guidance examples
+
+- `projects/davis-drapery/`: AI-ready context for a template-driven Kadence child-theme configurator, including Figma design-system facts, WordPress ownership boundaries, feature-development guidance, spreadsheet formula references, QA risks, and backup-snapshot safety rules.
+
 ## Core principles
 
 - Use `kadence/rowlayout` for sections, spacing, backgrounds, and overlays.
