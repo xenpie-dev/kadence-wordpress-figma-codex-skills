@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kadence Block Builder"
+  short_description: "Build registry-checked Kadence-native WordPress pages."
+  default_prompt: "Use $kadence-block-builder to build or convert this WordPress page with live registry-checked native Kadence blocks and validate the block markup."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma to Kadence"
+  short_description: "Match Figma in Kadence and WPCode"
+  default_prompt: "Use $figma-to-kadence to implement this Figma design as native Kadence blocks or WPCode-backed site styling."
