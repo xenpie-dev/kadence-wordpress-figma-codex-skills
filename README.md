@@ -11,7 +11,7 @@ The `examples/AGENTS.md` file shows how a project can enforce the central rule: 
 
 ## Project guidance examples
 
-- `projects/davis-drapery/`: AI-ready context for a template-driven Kadence child-theme configurator, including Figma design-system facts, WordPress ownership boundaries, feature-development guidance, spreadsheet formula references, QA risks, and backup-snapshot safety rules.
+- `projects/davis-drapery/`: AI-ready context for a template-driven Kadence child-theme configurator, including Figma design-system facts, WordPress ownership boundaries, design specifications, implementation plans and notes, spreadsheet formula references, QA risks, and backup-snapshot safety rules.
 
 ## Core principles
 
