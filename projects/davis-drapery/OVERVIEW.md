@@ -111,6 +111,15 @@ Observed environment from the WordPress connector:
 
 Important: the local workspace currently does not contain the WordPress codebase. The real implementation lives on the connected WordPress server. Use the `novamira_wordpress_421525` connector for source inspection and edits unless a local copy is later added.
 
+## Sitewide Footer And Dynamic Credits
+
+- The sitewide footer is the published Kadence Element `Main Footer`, post ID `37`.
+- Its copyright credit is the `kadence/advancedheading` block with unique ID `37_7e11b0-4b`.
+- The saved credit uses `© [davis_current_year] Davis Drapery & Interiors. All Rights Reserved.` instead of a hardcoded year.
+- The `[davis_current_year]` shortcode and targeted Kadence render filter are maintained in `wp-content/novamira-sandbox/davis-dynamic-footer-year.php` on the connected WordPress server. They render the WordPress site year from `wp_date('Y')`.
+- When creating or auditing footer credits, copyright notices, or similar year-based credits, never leave a four-digit year hardcoded. Reuse the site's dynamic year mechanism, or add an equivalent server-rendered mechanism when none exists.
+- After changing the footer or its dynamic-year implementation, clear WP Rocket and the object cache, then verify both the saved token and the rendered current year on a public page.
+
 ## Local Child Theme PHP Backup
 
 A read-only backup snapshot of the live Kadence child theme PHP files exists at:
@@ -128,14 +137,14 @@ Live page:
 - Page ID: `1003`
 - Page status: `publish`
 - Saved `post_content`: empty
-- Page template meta: `fabric-selection.php`
+- Page template meta: `fabric-selection-v2.php`
 
 This means the page is not built from editable page blocks. The visible builder is owned by the child theme template and related child-theme code.
 
 Primary implementation files on the server:
 
-- `wp-content/themes/kadence-child/fabric-selection.php`
-  - Main page template.
+- `wp-content/themes/kadence-child/fabric-selection-v2.php`
+  - Current main page template.
   - Contains the form markup.
   - Contains a large inline JavaScript block for wizard navigation, validation, fabric filtering, order summary, and pricing.
   - Also contains some inline CSS at the top.
@@ -340,7 +349,7 @@ Implementation risks:
 Before changing the builder:
 
 1. Confirm the live owner of the behavior.
-   - Most builder flow/pricing is in `fabric-selection.php`.
+   - Most builder flow/pricing is in `fabric-selection-v2.php`.
    - Most styles are in `fabric-style.css`.
    - Data helpers, AJAX, wishlist, and submission are in `functions.php`.
 2. Avoid editing page ID `1003` post content for builder changes; it is empty and the template owns the UI.
@@ -373,8 +382,8 @@ Suggested QA matrix for builder features:
 ## Source Of Truth By Topic
 
 - Brand colors, typography, buttons, form states: Figma guide.
-- Actual drapery-builder layout and DOM: `fabric-selection.php`.
-- Formula-focused staging template: `fabric-selection-v2.php` assigned only to page ID `6996` (`/drapery-builder-2/`).
+- Actual drapery-builder layout and DOM: `fabric-selection-v2.php`.
+- The V2 template is assigned to both page ID `1003` (`/drapery-builder/`) and page ID `6996` (`/drapery-builder-2/`).
 - Builder CSS: `assets/css/fabric-style.css`.
 - Fabric data: `fabric` posts and ACF fields.
 - Rod data: `rod-selection` posts and ACF fields.
@@ -384,9 +393,9 @@ Suggested QA matrix for builder features:
 
 ## Drapery Builder V2 Template
 
-- Original live builder page: `/drapery-builder/`, page ID `1003`, template `fabric-selection.php`.
+- Original live builder page: `/drapery-builder/`, page ID `1003`, currently assigned to `fabric-selection-v2.php`.
 - Formula staging builder page: `/drapery-builder-2/`, page ID `6996`, template `fabric-selection-v2.php`.
-- The V2 template was created as a separate child-theme template so formula work does not directly edit the original builder page.
+- The V2 template was created as a separate child-theme template and is now also active on the main builder page.
 - Local working copy: `wordpress-child-theme-working/fabric-selection-v2.php`.
 - Live child-theme target: `wp-content/themes/kadence-child/fabric-selection-v2.php`.
 - Formula helper marker in V2: `DAVIS_DRAPERY_FORMULA_V2_START` / `DAVIS_DRAPERY_FORMULA_V2_END`.
@@ -400,6 +409,28 @@ Suggested QA matrix for builder features:
   - Lining/interlining cut length add-ons are mapped by bottom hem, including 2/4 inch hems adding 9 inches.
   - Large bottom hem labor uses 9 times rounded labor widths.
   - Fabric, rod, lining, and interlining lookup data should come from WordPress post types/ACF, not copied spreadsheet tables.
+
+## Drapery Builder Finial Style
+
+- Step 5 includes a `finial_style` dropdown with the five approved values from the computerized form.
+- `None (Contract Track)` is the default.
+- The value is shown in both single- and double-rod order summaries.
+- The value is stored on the generated WooCommerce product, shown as cart item data, copied to the order line item, and shown in the generated product description.
+- The WooCommerce integration is maintained in `wordpress-child-theme-working/drapery-finial-style.php` and deployed as the recoverable Novamira sandbox module `davis-drapery-finial-style.php`.
+
+## Drapery Builder Mobile Layout
+
+- At widths up to 768px, the builder uses the full available width with 16px outer gutters.
+- The inline 65% form width is overridden only on mobile; desktop keeps the original two-column form/image layout.
+- The responsive override is maintained in `wordpress-child-theme-working/fabric-mobile-layout.css` and loaded with file-modified cache versioning by `drapery-finial-style.php`.
+
+## Material-Aware Colorways
+
+- The Colorways dropdowns are derived from the fabrics available for the currently selected material instead of listing every global taxonomy term.
+- Drapery shows the 25 unique values from the spreadsheet's `Fabric Data` sheet. The former zero-result Drapery choices (`Creamy White`, `Gold`, `Green`, `Linen`, and `White`) are no longer shown there.
+- Singular/plural duplicates are standardized in the builder: `Grey` includes both `Grey` and `Greys` assignments, while `Tan` includes both `Tan` and `Tans` assignments.
+- Sheer retains its eight valid values from `Sheer Data`, including the five labels that do not belong to Drapery.
+- The behavior applies independently to the main and farthest fabric selectors and is maintained in `wordpress-child-theme-working/drapery-colorways.js`.
 
 ## Final Notes For Future Agents
 
